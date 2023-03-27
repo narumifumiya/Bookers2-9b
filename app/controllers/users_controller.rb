@@ -5,7 +5,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @books = @user.books
     @book = Book.new
-
+    # book.rbに記述したスコープを使用して@userのbooksで各日付けでcreateしたbookを代入する
     @today_book =  @books.created_today
     @yesterday_book = @books.created_yesterday
     @this_week_book = @books.created_this_week
