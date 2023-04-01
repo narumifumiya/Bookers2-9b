@@ -30,17 +30,16 @@ class UsersController < ApplicationController
     end
   end
 
-  def search
-    @user = User.find(params[:user_id])
-    @books = @user.books
-    @book = Book.new
-    if params[:created_at] == ""
-      @search_book = "日付を選択してください"
-    else
-      create_at = params[:created_at]
-      @search_book = @books.where(['created_at LIKE ? ', "#{create_at}%"]).count
-    end
+  def daily_posts
+
+    user = User.find(params[:user_id])
+    # userのbooksからcreated_atカラムのデータを検索する（全ての日から）
+    # 非同期通信のjs.erbで使用する為、@booksとしている
+    @books = user.books.where(created_at: params[:created_at].to_date.all_day)
+    # viewでフォームは非同期としている為、daily_postsアクションが実行されるとdaily_posts_form.js.erbを読み込みに行く（非同期通信をする。）
+    render :daily_posts_form
   end
+
 
   private
 
